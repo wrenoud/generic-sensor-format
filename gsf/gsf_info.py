@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
+
 import argparse
 import collections
 
@@ -24,14 +26,14 @@ def GetInfo(filename):
   version = None
   for record in gsf_file:
     if record['record_type'] == gsf.GSF_HEADER:
-      print record
+      print (record)
       version = record['version']
     counter[record['record_type']] += 1
-  print 'file:', filename
-  print '  version:', version
-  print '  records:'
+  print ('file:', filename)
+  print ('  version:', version)
+  print ('  records:')
   for key in sorted(counter):
-    print '    %2d: %6d' % (key, counter[key]), gsf.RECORD_TYPES[key]
+    print ('    %2d: %6d' % (key, counter[key]), gsf.RECORD_TYPES[key])
 
 
 def main():

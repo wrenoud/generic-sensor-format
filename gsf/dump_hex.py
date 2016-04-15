@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
+
 import argparse
 
 import gsf
@@ -31,15 +33,15 @@ def DumpHex(filename, include_cpp=True):
   gsf_file = gsf.GsfFile(filename)
 
   if include_cpp:
-    print 'c++ setup:'
-    print
-    print '  #include <array>'
-    print '  using std::array;'
-    print
+    print ('c++ setup:')
+    print ()
+    print ('  #include <array>')
+    print ('  using std::array;')
+    print ()
 
   for record_num, record in enumerate(gsf_file):
     if record_num:
-      print
+      print ()
 
     header_data = record['header_data']
     data = record['data']
@@ -47,24 +49,24 @@ def DumpHex(filename, include_cpp=True):
     type_str = record['record_type_str']
     header_hex = [Hex2(v) for v in header_data]
     data_hex = [Hex2(v) for v in data]
-    print 'record:  ', record_num, type_str
-    print 'sizes  = (%d, %d, %d)' % (record['size_total'],
+    print ('record:  ', record_num, type_str)
+    print ('sizes  = (%d, %d, %d)' % (record['size_total'],
                                      len(header_hex),
-                                     len(data_hex))
-    print 'header = (', ', '.join(header_hex), ')'
-    print 'data   = (', ', '.join(data_hex), ')'
+                                     len(data_hex)))
+    print ('header = (', ', '.join(header_hex), ')')
+    print ('data   = (', ', '.join(data_hex), ')')
 
     if not include_cpp:
       continue
 
-    print 'c++ data:'
-    print
-    print '  // Record type:', type_str
-    print '  const uint32_t size_%d = %d;' % (record_num, len(data));
-    print '  array<uint8_t, size_%d> data_%d = {{' % (record_num, record_num)
+    print ('c++ data:')
+    print ()
+    print ('  // Record type:', type_str)
+    print ('  const uint32_t size_%d = %d;' % (record_num, len(data)))
+    print ('  array<uint8_t, size_%d> data_%d = {{' % (record_num, record_num))
     for piece in Pieces(data, 11):
-      print '    ' + ', '.join([Hex2(v) for v in piece]) + ','
-    print '  }};'
+      print ('    ' + ', '.join([Hex2(v) for v in piece]) + ',')
+    print ('  }};')
 
 
 def main():
